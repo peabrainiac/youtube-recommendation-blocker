@@ -1,0 +1,32 @@
+<svg viewBox="0 0 1 1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .title {
+            fill: #a0a0a0;
+        }
+        #suggestion {
+            fill: #ff6060;
+        }
+    </style>
+    <defs>
+        <g id="suggestion">
+            <rect x="0" y="0" width="0.275" height="0.1" />
+            <rect x="0" y="0.11" width="0.225" height="0.03" />
+        </g>
+    </defs>
+    <rect x="0" y="0" width="1" height="1" fill="#efefef" />
+    <rect x="0.05" y="0.05" width="0.6" height="0.45" fill="#000000" />
+    <rect x="0.2" y="0.175" width="0.3" height="0.2" rx="0.1" ry="0.05" fill="#303030" />
+    <path d="M 0.32 0.225 L 0.4 0.275 L 0.32 0.325" fill="#a0a0a0" />
+
+    <rect class="title" x="0.05" y="0.525" width="0.55" height="0.04" />
+    <rect class="title" x="0.05" y="0.575" width="0.3" height="0.03" />
+
+    <rect x="0.675" y="0.05" width="0.225" height="0.03" fill="#a0a0a0"/>
+    <use href="#suggestion" transform="translate(0.675,0.1)"/>
+    <use href="#suggestion" transform="translate(0.675,0.26)"/>
+    <use href="#suggestion" transform="translate(0.675,0.42)"/>
+    <use href="#suggestion" transform="translate(0.675,0.58)" opacity="0.85"/>
+    <use href="#suggestion" transform="translate(0.675,0.74)" opacity="0.45"/>
+
+    <!--path d="M 0.725 0.35 L 0.9 0.65 M 0.725 0.65 L 0.9 0.35" stroke="#ff0000" fill="transparent" stroke-width="0.03" /-->
+</svg>

@@ -1,0 +1,72 @@
+ytd-grid-video-renderer:not(:hover) ytd-channel-name, ytd-grid-video-renderer:not(:hover) ytd-thumbnail, ytd-grid-video-renderer:not(:hover) a#video-title, ytd-grid-video-renderer:not(:hover) #metadata-line > span, ytd-grid-video-renderer:not(:hover) ytd-badge-supported-renderer > div.badge {
+	background: #efefef !important;
+	border-radius: 3px;
+	pointer-events: none;
+	border-color: #efefef !important;
+}
+ytd-grid-video-renderer:not(:hover) a#video-title, ytd-grid-video-renderer:not(:hover) #metadata-line > span {
+	color: transparent !important;
+}
+ytd-grid-video-renderer:not(:hover) ytd-channel-name > *, ytd-grid-video-renderer:not(:hover) ytd-thumbnail > *, ytd-grid-video-renderer:not(:hover) ytd-badge-supported-renderer > div.badge > * {
+	opacity: 0;
+}
+ytd-grid-video-renderer:hover ytd-channel-name, ytd-grid-video-renderer:hover ytd-thumbnail, ytd-grid-video-renderer:hover a#video-title, ytd-grid-video-renderer:hover #metadata-line > span, ytd-grid-video-renderer:hover ytd-badge-supported-renderer > div.badge, ytd-grid-video-renderer:hover ytd-channel-name > *, ytd-grid-video-renderer:hover ytd-thumbnail > *, ytd-grid-video-renderer:hover ytd-badge-supported-renderer > div.badge > * {
+	transition: all 0.5s ease 1.5s;
+}
+ytd-grid-video-renderer ytd-channel-name, ytd-grid-video-renderer ytd-thumbnail, ytd-grid-video-renderer a#video-title, ytd-grid-video-renderer #metadata-line > span, ytd-grid-video-renderer ytd-badge-supported-renderer > div.badge, ytd-grid-video-renderer ytd-channel-name > *, ytd-grid-video-renderer ytd-thumbnail > *, ytd-grid-video-renderer ytd-badge-supported-renderer > div.badge > * {
+	transition: all 0.5s ease 1s;
+}
+ytd-grid-video-renderer, ytd-post-renderer, ytd-grid-radio-renderer {
+	position: relative;
+}
+ytd-grid-video-renderer::after, ytd-post-renderer::after, ytd-grid-radio-renderer::after {
+	content: " ";
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transition: all 0.5s ease 1s;
+	background: transparent;
+	top: 0;
+	left: 0;
+}
+ytd-grid-video-renderer:hover::after, ytd-post-renderer:hover::after, ytd-grid-radio-renderer:hover::after {
+	transition: all 0.5s ease 1.5s;
+	height: 0;
+	background: #efefef80;
+}
+
+/** Posts **/
+ytd-post-renderer:not(:hover) {
+	background: #efefef !important;
+	border-color: #efefef !important;
+}
+ytd-post-renderer:not(:hover) > * {
+	opacity: 0;
+}
+ytd-post-renderer:hover, ytd-post-renderer:hover > * {
+	transition: all 0.5s ease 1.5s;
+}
+ytd-post-renderer, ytd-post-renderer > * {
+	transition: all 0.5s ease 1s;
+}
+
+/** Playlists **/
+ytd-grid-radio-renderer:not(:hover) ytd-thumbnail, ytd-grid-radio-renderer:not(:hover) span#video-title {
+	background: #efefef !important;
+	border-radius: 3px;
+	pointer-events: none;
+	border-color: #efefef !important;
+}
+ytd-grid-radio-renderer:not(:hover) span#video-title {
+	color: transparent !important;
+}
+ytd-grid-radio-renderer:not(:hover) ytd-thumbnail > * {
+	opacity: 0 !important;
+}
+ytd-grid-radio-renderer:hover ytd-thumbnail, ytd-grid-radio-renderer:hover ytd-thumbnail > *, ytd-grid-radio-renderer:hover span#video-title {
+	transition: all 0.5s ease 1.5s;
+}
+ytd-grid-radio-renderer ytd-thumbnail, ytd-grid-radio-renderer ytd-thumbnail > *, ytd-grid-radio-renderer span#video-title {
+	transition: all 0.5s ease 1s;
+}

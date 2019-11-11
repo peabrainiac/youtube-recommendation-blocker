@@ -1,0 +1,7 @@
+/**
+ * Disables transitions for all elements.
+ * Can be added to the page temporarily to prevent transitions from firing on page load.
+ */
+ * {
+     transition: none !important;
+ }
