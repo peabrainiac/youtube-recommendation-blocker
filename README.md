@@ -2,9 +2,11 @@
 
 A simple Browser Addon that greys out Youtube recommendations to keep you from getting distracted.
 
-Available for Firefox on [addons.mozilla.org](https://addons.mozilla.org/de/developers/addon/yt-recommendations-blocker/).
+## Install
 
-To run a copy of this locally, got to [about:debugging#/runtime/this-firefox](about:debugging#/runtime/this-firefox), click on "load temporary addon" and select one of the files in the source folder. The addon will then be installed until you restart the browser again (or remove it again using the same page).
+The latest release is available for Firefox on [addons.mozilla.org](https://addons.mozilla.org/de/developers/addon/yt-recommendations-blocker/).
+
+To instead run a copy of this project locally, got to `about:debugging#/runtime/this-firefox`, click on "load temporary addon" and select one of the files in the source folder. The addon will then be installed until you restart the browser again (or remove it again using the same page).
 
 ## Compatibility
 
