@@ -12,7 +12,7 @@ ytd-compact-video-renderer:not(:hover) ytd-channel-name > *, ytd-compact-video-r
 ytd-compact-video-renderer ytd-channel-name, ytd-compact-video-renderer ytd-thumbnail, ytd-compact-video-renderer span#video-title, ytd-compact-video-renderer #metadata-line > span, ytd-compact-video-renderer ytd-badge-supported-renderer > div.badge, ytd-compact-video-renderer ytd-channel-name > *, ytd-compact-video-renderer ytd-thumbnail > *, ytd-compact-video-renderer ytd-badge-supported-renderer > div.badge > * {
 	transition: all 0.5s ease 1.5s;
 }
-ytd-compact-video-renderer::after {
+ytd-compact-video-renderer::after, ytd-compact-radio-renderer::after, ytd-compact-playlist-renderer::after {
 	content: " ";
 	display: block;
 	position: absolute;
@@ -21,7 +21,7 @@ ytd-compact-video-renderer::after {
 	transition: all 0.5s ease 1.5s;
 	background: transparent;
 }
-ytd-compact-video-renderer:hover::after {
+ytd-compact-video-renderer:hover::after, ytd-compact-radio-renderer:hover::after, ytd-compact-playlist-renderer:hover::after {
 	height: 0;
 	background: #efefef80;
 }
@@ -29,4 +29,38 @@ ytd-compact-video-renderer:hover::after {
 /** Recommendations after video **/
 .html5-endscreen {
 	display: none;
+}
+
+/** Mix Playlists **/
+ytd-compact-radio-renderer:not(:hover) ytd-thumbnail, ytd-compact-radio-renderer:not(:hover) span#video-title {
+	background: #efefef !important;
+	border-radius: 3px;
+	pointer-events: none;
+	border-color: #efefef !important;
+}
+ytd-compact-radio-renderer:not(:hover) span#video-title {
+	color: transparent !important;
+}
+ytd-compact-radio-renderer:not(:hover) ytd-thumbnail > * {
+	opacity: 0 !important;
+}
+ytd-compact-radio-renderer ytd-thumbnail, ytd-compact-radio-renderer ytd-thumbnail > *, ytd-compact-radio-renderer span#video-title {
+	transition: all 0.5s ease 1.5s;
+}
+
+/** Normal Playlists **/
+ytd-compact-playlist-renderer:not(:hover) ytd-playlist-thumbnail, ytd-compact-playlist-renderer:not(:hover) span#video-title, ytd-compact-playlist-renderer:not(:hover) ytd-channel-name, ytd-compact-playlist-renderer:not(:hover) span.ytd-video-meta-block {
+	background: #efefef !important;
+	border-radius: 3px;
+	pointer-events: none;
+	border-color: #efefef !important;
+}
+ytd-compact-playlist-renderer:not(:hover) span#video-title, ytd-compact-playlist-renderer:not(:hover) ytd-channel-name, ytd-compact-playlist-renderer:not(:hover) span.ytd-video-meta-block {
+	color: transparent !important;
+}
+ytd-compact-playlist-renderer:not(:hover) ytd-playlist-thumbnail > * {
+	opacity: 0 !important;
+}
+ytd-compact-playlist-renderer ytd-playlist-thumbnail, ytd-compact-playlist-renderer ytd-playlist-thumbnail > *, ytd-compact-playlist-renderer span#video-title, ytd-compact-playlist-renderer ytd-channel-name, ytd-compact-playlist-renderer span.ytd-video-meta-block {
+	transition: all 0.5s ease 1.5s;
 }
