@@ -1,27 +1,34 @@
 var videoPageRegex = /youtube\.com\/watch\?/;
 var startPageRegex = /youtube\.com\/?$/;
 
-var addedStartPageStyles = false;
-var addedVideoPageStyles = false;
+var videoPageStyles;
+var startPageStyles;
 
 onLoadOrNavigation(function(){
 	if (videoPageRegex.test(document.location.href)){
-		if (!addedVideoPageStyles){
-			var link = loadStylesheet("video.css");
-			document.head.appendChild(link);
-			addedVideoPageStyles = true;
+		if (!videoPageStyles){
+			videoPageStyles = loadStylesheet("video.css");
+			document.head.appendChild(videoPageStyles);
+		}else if (videoPageStyles.disabled){
+			videoPageStyles.disabled = false;
 		}
-	}else if (startPageRegex.test(document.location.href)){
-		if (!addedStartPageStyles){
-			var link = loadStylesheet("startpage.css");
+	}else if(videoPageStyles&&!videoPageStyles.disabled){
+		videoPageStyles.disabled = true;
+	}
+	if (startPageRegex.test(document.location.href)){
+		if (!startPageStyles){
+			startPageStyles = loadStylesheet("startpage.css");
 			var temp = loadStylesheet("no-transitions.css");
 			document.head.appendChild(temp);
-			document.head.appendChild(link);
+			document.head.appendChild(startPageStyles);
 			setTimeout(function(){
 				document.head.removeChild(temp);
 			},0);
-			addedStartPageStyles = true;
+		}else if(startPageStyles.disabled){
+			startPageStyles.disabled = false;
 		}
+	}else if(startPageStyles&&!startPageStyles.disabled){
+		startPageStyles.disabled = true;
 	}
 });
 
@@ -29,7 +36,6 @@ function loadStylesheet(path){
 	var element = document.createElement("link");
 	element.rel = "stylesheet";
 	element.href = chrome.extension.getURL(path);
-	console.log("Injected "+path);
 	return element;
 }
 
