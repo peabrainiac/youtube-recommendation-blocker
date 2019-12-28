@@ -1,12 +1,16 @@
+ytd-rich-grid-video-renderer, ytd-post-renderer {
+	--ext-yt-blocker-color: #efefef;
+}
+
 /* For videos on new Frontpage Design */
 ytd-rich-grid-video-renderer:not(:hover) ytd-channel-name, ytd-rich-grid-video-renderer:not(:hover) ytd-thumbnail, ytd-rich-grid-video-renderer:not(:hover) #video-title, ytd-rich-grid-video-renderer:not(:hover) #metadata-line > span, ytd-rich-grid-video-renderer:not(:hover) ytd-badge-supported-renderer > div.badge {
-	background: #efefef !important;
+	background: var(--ext-yt-blocker-color) !important;
 	border-radius: 3px;
 	pointer-events: none;
-	border-color: #efefef !important;
+	border-color: var(--ext-yt-blocker-color) !important;
 }
 ytd-rich-grid-video-renderer:not(:hover) #avatar {
-	background: #efefef !important;
+	background: var(--ext-yt-blocker-color) !important;
 }
 ytd-rich-grid-video-renderer:not(:hover) #video-title, ytd-rich-grid-video-renderer:not(:hover) #metadata-line > span {
 	color: transparent !important;
@@ -50,10 +54,10 @@ ytd-rich-grid-video-renderer:hover::after {
  * (left in for backwards compatibility)
  */
 ytd-grid-video-renderer:not(:hover) ytd-channel-name, ytd-grid-video-renderer:not(:hover) ytd-thumbnail, ytd-grid-video-renderer:not(:hover) a#video-title, ytd-grid-video-renderer:not(:hover) #metadata-line > span, ytd-grid-video-renderer:not(:hover) ytd-badge-supported-renderer > div.badge {
-	background: #efefef !important;
+	background: var(--ext-yt-blocker-color) !important;
 	border-radius: 3px;
 	pointer-events: none;
-	border-color: #efefef !important;
+	border-color: var(--ext-yt-blocker-color) !important;
 }
 ytd-grid-video-renderer:not(:hover) a#video-title, ytd-grid-video-renderer:not(:hover) #metadata-line > span {
 	color: transparent !important;
@@ -84,13 +88,13 @@ ytd-grid-video-renderer::after, ytd-post-renderer::after, ytd-grid-radio-rendere
 ytd-grid-video-renderer:hover::after, ytd-post-renderer:hover::after, ytd-grid-radio-renderer:hover::after, ytd-grid-playlist-renderer:hover::after {
 	transition: all 0.5s ease 1.5s;
 	height: 0;
-	background: #efefef80;
+	background: var(--ext-yt-blocker-color);
 }
 
 /** Posts **/
 ytd-post-renderer:not(:hover) {
-	background: #efefef !important;
-	border-color: #efefef !important;
+	background: var(--ext-yt-blocker-color) !important;
+	border-color: var(--ext-yt-blocker-color) !important;
 }
 ytd-post-renderer:not(:hover) > * {
 	opacity: 0;
