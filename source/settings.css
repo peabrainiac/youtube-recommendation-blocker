@@ -1,0 +1,45 @@
+#table {
+	border-collapse: collapse;
+}
+#table td, #table th {
+	height: 50px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#table th {
+	height: 50px;
+	background: #dfdfdf;
+	font-size: 20px;
+}
+#table td {
+	height: 50px;
+	font-size: 18px;
+}
+button {
+	border: none;
+	height: 30px;
+	padding-left: 10px;
+	padding-right: 10px;
+	color: #ffffff;
+	background: #bfbfbf;
+	cursor: pointer;
+}
+#button-add-rule {
+	background: #00bf00;
+	font-size: 18px;
+	transition: background-color 0.25s ease;
+}
+#button-add-rule:hover {
+	background: #10cf10;
+}
+.button-delete {
+	background: #bf0000;
+	opacity: 0;
+	transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+tr:hover .button-delete {
+	opacity: 1;
+}
+.button-delete:hover {
+	background: #df2020;
+}

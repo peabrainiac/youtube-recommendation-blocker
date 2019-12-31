@@ -17,5 +17,12 @@
 		"video.css",
 		"startpage.css",
 		"no-transitions.css"
+	],
+	"options_ui": {
+		"page": "settings.html",
+		"open_in_tab": true
+	},
+	"permissions": [
+		"storage"
 	]
 }
