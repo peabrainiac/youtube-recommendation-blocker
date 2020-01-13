@@ -99,7 +99,7 @@ function getVideoColor(settings,title,channel){
 	console.log("Settings:",settings);
 	for (let i=0;i<settings.categories.length;i++){
 		for (let i2=0;i2<settings.categories[i].channels.length;i2++){
-			if (channel==settings.categories[i].channels[i2]){
+			if (channel.toUpperCase()==settings.categories[i].channels[i2].toUpperCase()){
 				color = settings.categories[i].color;
 				console.log("Found Matching channel!");
 			}else{

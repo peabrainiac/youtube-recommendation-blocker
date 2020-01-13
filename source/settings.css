@@ -1,19 +1,94 @@
-#table {
-	border-collapse: collapse;
+color-settings-element, category-element, category-entry-element {
+	display: block;
 }
-#table td, #table th {
-	height: 50px;
-	padding-left: 10px;
-	padding-right: 10px;
+#title {
+	text-align: center;
+	margin-bottom: 35px;
 }
-#table th {
-	height: 50px;
-	background: #dfdfdf;
-	font-size: 20px;
+#settings {
+	width: 100%;
+	max-width: 1000px;
+	margin: 0 auto;
 }
-#table td {
-	height: 50px;
-	font-size: 18px;
+.color-settings-add-category-button {
+	display: block;
+	margin: 10px auto;
+	background: #bfbfbf;
+	transition: background-color 0.25s ease;
+}
+.color-settings-add-category-button:hover {
+	background: #00bfff;
+}
+.category {
+	padding-bottom: 15px;
+}
+.category-header {
+	padding: 5px 10px;
+	background: #efefef;
+	font-size: 1.1em;
+	position: relative;
+}
+.category-color {
+	float: right;
+	text-align: center;
+}
+.category-close-button {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 4px;
+	color: transparent;
+	transition: color 0.25s ease;
+}
+.category-header:hover .category-close-button {
+	color: #bfbfbf;
+}
+.category-header:hover .category-close-button:hover {
+	color: #505050;
+}
+.category-channel-list {
+	padding: 5px 10px 5px 30px;
+}
+.category-channel-entry {
+	padding: 2px;
+}
+.category-add-channel-button {
+	margin: 0 50px;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.25s ease, background-color 0.25s ease, visibility 0.25s step-end;
+}
+.category:hover .category-add-channel-button {
+	visibility: visible;
+	opacity: 1;
+	transition: opacity 0.25s ease, background-color 0.25s ease;
+}
+.category-add-channel-button:hover {
+	background-color: #00bfff;
+}
+.channel-close-button {
+	padding: 5px;
+	margin: -5px 0;
+	color: transparent;
+	transition: color 0.25s ease;
+}
+.category-channel-entry:hover .channel-close-button {
+	color: #bfbfbf;
+}
+.category-channel-entry:hover .channel-close-button:hover {
+	color: #505050;
+}
+input {
+	background: transparent;
+	border: 1px solid transparent;
+	transition: border-bottom-color 0.25s ease;
+	font-size: 1em;
+}
+input:hover {
+	border-bottom-color: #a0a0a0;
+}
+input:focus {
+	border-bottom-color: #505050;
 }
 button {
 	border: none;
@@ -23,23 +98,4 @@ button {
 	color: #ffffff;
 	background: #bfbfbf;
 	cursor: pointer;
-}
-#button-add-rule {
-	background: #00bf00;
-	font-size: 18px;
-	transition: background-color 0.25s ease;
-}
-#button-add-rule:hover {
-	background: #10cf10;
-}
-.button-delete {
-	background: #bf0000;
-	opacity: 0;
-	transition: opacity 0.25s ease, background-color 0.25s ease;
-}
-tr:hover .button-delete {
-	opacity: 1;
-}
-.button-delete:hover {
-	background: #df2020;
 }
