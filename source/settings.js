@@ -30,9 +30,14 @@ class ColorSettingsElement extends HTMLElement {
 		super();
 		this.className = "color-settings";
 		this.innerHTML = `
+			<div class="color-settings-default-categories-list"></div>
 			<div class="color-settings-categories-list"></div>
 			<button class="color-settings-add-category-button">+ Add Category</button>
 		`;
+		this._defaultCategoriesList = this.querySelector(".color-settings-default-categories-list");
+		this._defaultColorInput = new DefaultCategoryElement();
+		this._defaultColorInput.name = "Default";
+		this._defaultCategoriesList.appendChild(this._defaultColorInput);
 		this._categoriesList = this.querySelector(".color-settings-categories-list");
 		this._addCategoryButton = this.querySelector(".color-settings-add-category-button");
 		this._addCategoryButton.addEventListener("click",()=>{
@@ -44,7 +49,7 @@ class ColorSettingsElement extends HTMLElement {
 
 	get data(){
 		var colorSettings = {};
-		colorSettings.default = "#efefef";
+		colorSettings.default = this._defaultColorInput.data;
 		colorSettings.categories = [];
 		for (let i=0;i<this._categoriesList.children.length;i++){
 			colorSettings.categories.push(this._categoriesList.children[i].data);
@@ -53,6 +58,7 @@ class ColorSettingsElement extends HTMLElement {
 	}
 
 	set data(colorSettings){
+		this._defaultColorInput.data = colorSettings.default;
 		this._categoriesList.innerHTML = "";
 		for (let i=0;i<colorSettings.categories.length;i++){
 			let categoryElement = new CategoryElement();
@@ -127,6 +133,46 @@ class CategoryElement extends HTMLElement {
 	}
 }
 
+class DefaultCategoryElement extends HTMLElement {
+	constructor(){
+		super();
+		this.className = "default-category";
+		this.innerHTML = `
+			<div class="category-header">
+				<input type="text" class="category-name" disabled="true"></input>
+				<input type="text" class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></input>
+			</div>
+		`;
+		this._header = this.querySelector(".category-header");
+		this._nameInput = this.querySelector(".category-name");
+		this._colorInput = this.querySelector(".category-color");
+		this._colorInput.addEventListener("input",()=>{
+			this.setBackgroundColor(this._colorInput.value);
+		});
+	}
+
+	get data(){
+		return this._colorInput.value;
+	}
+
+	set data(colorData){
+		this._colorInput.value = colorData;
+		this.setBackgroundColor(colorData);
+	}
+
+	get name(){
+		return this._nameInput.value;
+	}
+
+	set name(name){
+		this._nameInput.value = name;
+	}
+
+	setBackgroundColor(color){
+		this._header.style.background = color;
+	}
+}
+
 class CategoryEntryElement extends HTMLElement {
 	constructor(){
 		super();
@@ -157,4 +203,5 @@ class CategoryEntryElement extends HTMLElement {
 
 customElements.define("color-settings-element",ColorSettingsElement);
 customElements.define("category-element",CategoryElement);
+customElements.define("default-category-element",DefaultCategoryElement);
 customElements.define("category-entry-element",CategoryEntryElement);

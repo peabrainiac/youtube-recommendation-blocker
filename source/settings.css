@@ -1,4 +1,4 @@
-color-settings-element, category-element, category-entry-element {
+color-settings-element, category-element, default-category-element, category-entry-element {
 	display: block;
 }
 #title {
@@ -19,7 +19,7 @@ color-settings-element, category-element, category-entry-element {
 .color-settings-add-category-button:hover {
 	background: #00bfff;
 }
-.category {
+.category, .default-category {
 	padding-bottom: 15px;
 }
 .category-header {
@@ -27,6 +27,9 @@ color-settings-element, category-element, category-entry-element {
 	background: #efefef;
 	font-size: 1.1em;
 	position: relative;
+}
+.default-category .category-name {
+	color: inherit;
 }
 .category-color {
 	float: right;
@@ -84,10 +87,10 @@ input {
 	transition: border-bottom-color 0.25s ease;
 	font-size: 1em;
 }
-input:hover {
+input:not(:disabled):hover {
 	border-bottom-color: #00000060;
 }
-input:focus {
+input:not(:disabled):focus {
 	border-bottom-color: #000000b0;
 }
 button {
