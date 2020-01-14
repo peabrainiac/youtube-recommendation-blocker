@@ -75,11 +75,15 @@ class CategoryElement extends HTMLElement {
 			<div class="category-channel-list"></div>
 			<button class="category-add-channel-button">+ Add Channel</button>
 		`;
+		this._header = this.querySelector(".category-header");
 		this._nameInput = this.querySelector(".category-name");
 		this._colorInput = this.querySelector(".category-color");
 		this._closeButton = this.querySelector(".category-close-button");
 		this._channelList = this.querySelector(".category-channel-list");
 		this._addChannelButton = this.querySelector(".category-add-channel-button");
+		this._colorInput.addEventListener("input",()=>{
+			this.setBackgroundColor(this._colorInput.value);
+		});
 		this._closeButton.addEventListener("click",()=>{
 			this.remove();
 		});
@@ -104,12 +108,18 @@ class CategoryElement extends HTMLElement {
 	set data(categoryData){
 		this._nameInput.value = categoryData.name;
 		this._colorInput.value = categoryData.color;
+		this.setBackgroundColor(categoryData.color);
 		this._channelList.innerHTML = "";
 		for (let i=0;i<categoryData.channels.length;i++){
 			let channelElement = new CategoryEntryElement();
 			channelElement.data = categoryData.channels[i];
 			this._channelList.appendChild(channelElement);
 		}
+	}
+
+	setBackgroundColor(color){
+		this._header.style.background = color;
+		this._channelList.style.background = color+" linear-gradient(#ffffffbf,#ffffffbf)";
 	}
 
 	focus(){
