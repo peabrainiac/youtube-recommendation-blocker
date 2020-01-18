@@ -37,74 +37,56 @@ onLoadOrNavigation(function(){
 async function onStartPageLoad(){
 	console.log("Running code on startpage!");
 	var colorSettings = await getColorSettings();
-	let processedVideos = [];
-	let firstMutationObserver = new MutationObserver(testForGrid);
-	firstMutationObserver.observe(document.body,{childList:true,subtree:true});
-	testForGrid();
-	function testForGrid(){
-		let container = document.querySelector("#contents.ytd-rich-grid-renderer");
-		console.log("Body Mutated! Container:",container);
-		if (container){
-			firstMutationObserver.disconnect();
-			console.log("Grid loaded");
-			(new MutationObserver(update)).observe(container,{childList:true});
-			update();
-		}
-	}
-	function update(){
-		try {
-			console.log("processing new videos!");
-			let videos = document.getElementsByTagName("ytd-rich-grid-video-renderer");
-			console.log("videos:",videos)
-			for (let i=0;i<videos.length;i++){
-				let video = videos[i];
-				if (!processedVideos.includes(video)){
-					let title = (video.querySelector("#video-title")||{}).textContent;
-					let channel = (video.querySelector("#channel-name #container #text-container #text a")||{}).textContent;
-					console.log("Processing video: ",{title,channel});
-					videos[i].style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
-					processedVideos.push(video);
-				}
-			}
-		}catch(e){
-			console.log(e);
-		}
-	}
+	let container = await asyncQuerySelector(document.body,"#contents.ytd-rich-grid-renderer");
+	console.log("Grid loaded:",container);
+	asyncQuerySelectorAll(container,"ytd-rich-grid-video-renderer",function(video){
+		let title = (video.querySelector("#video-title")||{}).textContent;
+		let channel = (video.querySelector("#channel-name #container #text-container #text a")||{}).textContent;
+		console.log("Processing video: ",{title,channel});
+		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
+	});
 }
 
 async function onVideoPageLoad(){
-	let processedVideos = [];
-	let firstMutationObserver = new MutationObserver(testForList);
-	firstMutationObserver.observe(document.body,{childList:true});
-	var colorSettings = getColorSettings();
-	testForList();
-	async function testForList(){
-		var list = document.querySelector("ytd-watch-next-secondary-results-renderer #items");
-		console.log("body mutated! list:",list);
-		if (list){
-			firstMutationObserver.disconnect();
-			console.log("List loaded!");
-			colorSettings = await colorSettings;
-			(new MutationObserver(update)).observe(list,{childList:true});
-			update();
-		}
-	}
-	function update(){
-		try {
-			console.log("processing new videos!");
-			let videos = document.querySelectorAll("ytd-compact-video-renderer, ytd-compact-playlist-renderer");
-			for (let i=0;i<videos.length;i++){
-				let video = videos[i];
-				if (!processedVideos.includes(video)){
-					let title = video.querySelector("#video-title").textContent.trim();
-					let channel = video.querySelector("#channel-name #container #text-container #text").textContent;
-					console.log("Processing video: ",{title,channel});
-					videos[i].style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
-					processedVideos.push(video);
-				}
+	var colorSettings = await getColorSettings();
+	let list = await asyncQuerySelector(document.body,"ytd-watch-next-secondary-results-renderer #items");
+	console.log("List loaded!");
+	asyncQuerySelectorAll(list,"ytd-compact-video-renderer, ytd-compact-playlist-renderer",function(video){
+		let title = video.querySelector("#video-title").textContent.trim();
+		let channel = video.querySelector("#channel-name #container #text-container #text").textContent;
+		console.log("Processing video: ",{title,channel});
+		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
+	});
+}
+
+async function asyncQuerySelector(containerElement,query){
+	return new Promise((resolve,reject)=>{
+		let mutationObserver = new MutationObserver(testQuery);
+		mutationObserver.observe(containerElement,{childList:true,subtree:true});
+		testQuery();
+		function testQuery(){
+			let element = containerElement.querySelector(query);
+			if (element){
+				mutationObserver.disconnect();
+				resolve(element);
 			}
-		}catch(e){
-			console.log(e);
+		}
+	});
+}
+
+function asyncQuerySelectorAll(containerElement,query,callback){
+	let processedElements = [];
+	let mutationObserver = new MutationObserver(update);
+	mutationObserver.observe(containerElement,{childList:true})
+	update();
+	function update(){
+		let elements = containerElement.querySelectorAll(query);
+		for (let i=0;i<elements.length;i++){
+			let element = elements[i];
+			if (!processedElements.includes(element)){
+				callback(element);
+				processedElements.push(element);
+			}
 		}
 	}
 }
