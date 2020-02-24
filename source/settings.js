@@ -139,7 +139,7 @@ class DefaultCategoryElement extends HTMLElement {
 		this.className = "default-category";
 		this.innerHTML = `
 			<div class="category-header">
-				<input type="text" class="category-name" disabled="true"></input>
+				<input type="text" class="category-name" readonly="true"></input>
 				<input type="text" class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></input>
 			</div>
 		`;

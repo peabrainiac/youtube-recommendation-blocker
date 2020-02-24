@@ -42,6 +42,7 @@ color-settings-element, category-element, default-category-element, category-ent
 	padding: 4px;
 	color: transparent;
 	transition: color 0.25s ease;
+	cursor: pointer;
 }
 .category-header:hover .category-close-button {
 	color: #00000040;
@@ -74,6 +75,7 @@ color-settings-element, category-element, default-category-element, category-ent
 	margin: -5px 0;
 	color: transparent;
 	transition: color 0.25s ease;
+	cursor: pointer;
 }
 .category-channel-entry:hover .channel-close-button {
 	color: #00000040;
@@ -87,10 +89,10 @@ input {
 	transition: border-bottom-color 0.25s ease;
 	font-size: 1em;
 }
-input:not(:disabled):hover {
+input:not([readonly]):hover {
 	border-bottom-color: #00000060;
 }
-input:not(:disabled):focus {
+input:not([readonly]):focus {
 	border-bottom-color: #000000b0;
 }
 button {
