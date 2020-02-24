@@ -8,7 +8,7 @@ onLoad(function (){
 
 	browser.storage.local.get("colorSettings").then((settings)=>{
 		// loads some example channels if there are no saved settings yet. Will be removed in the next release
-		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",categories:[{name:"Science",color:"#cfeff8",channels:["3blue1brown","veritasium"]},{name:"Music",color:"#efdfcf",channels:["three days grace"]}]};
+		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",currentChannel:"#e4e4e4",categories:[{name:"Science",color:"#cfeff8",channels:["3blue1brown","veritasium"]},{name:"Music",color:"#efdfcf",channels:["three days grace"]}]};
 	});
 
 	function saveSettings(colorSettings){
@@ -38,6 +38,9 @@ class ColorSettingsElement extends HTMLElement {
 		this._defaultColorInput = new DefaultCategoryElement();
 		this._defaultColorInput.name = "Default";
 		this._defaultCategoriesList.appendChild(this._defaultColorInput);
+		this._currentChannelColorInput = new DefaultCategoryElement();
+		this._currentChannelColorInput.name = "Current Channel";
+		this._defaultCategoriesList.appendChild(this._currentChannelColorInput);
 		this._categoriesList = this.querySelector(".color-settings-categories-list");
 		this._addCategoryButton = this.querySelector(".color-settings-add-category-button");
 		this._addCategoryButton.addEventListener("click",()=>{
@@ -50,6 +53,7 @@ class ColorSettingsElement extends HTMLElement {
 	get data(){
 		var colorSettings = {};
 		colorSettings.default = this._defaultColorInput.data;
+		colorSettings.currentChannel = this._currentChannelColorInput.data;
 		colorSettings.categories = [];
 		for (let i=0;i<this._categoriesList.children.length;i++){
 			colorSettings.categories.push(this._categoriesList.children[i].data);
@@ -59,6 +63,7 @@ class ColorSettingsElement extends HTMLElement {
 
 	set data(colorSettings){
 		this._defaultColorInput.data = colorSettings.default;
+		this._currentChannelColorInput.data = colorSettings.currentChannel;
 		this._categoriesList.innerHTML = "";
 		for (let i=0;i<colorSettings.categories.length;i++){
 			let categoryElement = new CategoryElement();

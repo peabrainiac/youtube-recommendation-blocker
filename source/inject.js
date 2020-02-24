@@ -51,11 +51,13 @@ async function onVideoPageLoad(){
 	var colorSettings = await getColorSettings();
 	let list = await asyncQuerySelector(document.body,"ytd-watch-next-secondary-results-renderer #items");
 	console.log("List loaded!");
+	let currentChannel = (await asyncQuerySelector(document.body,"#meta #upload-info #channel-name a")).textContent;
+	console.log("Current channel:",currentChannel);
 	asyncQuerySelectorAll(list,"ytd-compact-video-renderer, ytd-compact-playlist-renderer",function(video){
 		let title = video.querySelector("#video-title").textContent.trim();
 		let channel = video.querySelector("#channel-name #container #text-container #text").textContent;
 		console.log("Processing video: ",{title,channel});
-		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
+		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel,currentChannel));
 	});
 }
 
@@ -97,11 +99,13 @@ async function getColorSettings(){
 	return ((settings&&settings.colorSettings)?settings.colorSettings:{default:"#efefef",categories:[]});
 }
 
-function getVideoColor(settings,title,channel){
+function getVideoColor(settings,title,channel,currentChannel=null){
 	console.log("Computing video color!");
 	let color = settings.default;
 	console.log("Settings:",settings);
-	if (channel!==undefined){
+	if (channel==currentChannel){
+		color = settings.currentChannel;
+	}else if (channel!==undefined){
 		for (let i=0;i<settings.categories.length;i++){
 			for (let i2=0;i2<settings.categories[i].channels.length;i2++){
 				if (channel.toUpperCase()==settings.categories[i].channels[i2].toUpperCase()){
