@@ -8,7 +8,7 @@ onLoad(function (){
 
 	browser.storage.local.get("colorSettings").then((settings)=>{
 		// loads some example channels if there are no saved settings yet. Will be removed in the next release
-		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",currentChannel:"#e4e4e4",categories:[{name:"Science",color:"#cfeff8",channels:["3blue1brown","veritasium"]},{name:"Music",color:"#efdfcf",channels:["three days grace"]}]};
+		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",currentChannel:"#e0e0e0",categories:[{name:"Science",color:"#d8eff8",channels:["3blue1brown","veritasium"]},{name:"Music",color:"#efdfcf",channels:["three days grace"]}]};
 	});
 
 	function saveSettings(colorSettings){

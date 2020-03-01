@@ -89,7 +89,7 @@ input {
 	transition: border-bottom-color 0.25s ease;
 	font-size: 1em;
 }
-input:not([readonly]):hover {
+input:not([readonly]):hover, .category-channel-entry:hover > input:not([readonly]) {
 	border-bottom-color: #00000060;
 }
 input:not([readonly]):focus {
