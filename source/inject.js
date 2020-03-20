@@ -48,10 +48,7 @@ async function onStartPageLoad(){
 	let container = await asyncQuerySelector(document.body,"#contents.ytd-rich-grid-renderer");
 	console.log("Grid loaded:",container);
 	asyncQuerySelectorAll(container,"ytd-rich-grid-video-renderer",function(video){
-		let title = (video.querySelector("#video-title")||{}).textContent;
-		let channel = (video.querySelector("#channel-name #container #text-container #text a")||{}).textContent;
-		console.log("Processing video: ",{title,channel});
-		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel));
+		colorVideo(video,colorSettings);
 	});
 }
 
@@ -62,11 +59,21 @@ async function onVideoPageLoad(){
 	let list = await asyncQuerySelector(document.body,"ytd-watch-next-secondary-results-renderer #items");
 	console.log("List loaded!");
 	asyncQuerySelectorAll(list,"ytd-compact-video-renderer, ytd-compact-playlist-renderer",function(video){
-		let title = video.querySelector("#video-title").textContent.trim();
-		let channel = video.querySelector("#channel-name #container #text-container #text").textContent;
-		console.log("Processing video: ",{title,channel});
-		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel,currentChannel));
+		colorVideo(video,colorSettings,currentChannel);
 	});
+}
+
+function colorVideo(video,colorSettings,currentChannel=null){
+	let title = (video.querySelector("#video-title")||{}).textContent.trim();
+	let channel = (video.querySelector("#channel-name #container #text-container #text")||{}).textContent;
+	console.log("Processing video: ",{title,channel});
+	video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel,currentChannel));
+	setTimeout(()=>{
+		// checks the video again one second later, in case the page wasn't fully loaded previously
+		let title = (video.querySelector("#video-title")||{}).textContent.trim();
+		let channel = (video.querySelector("#channel-name #container #text-container #text")||{}).textContent;
+		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel,currentChannel));
+	},1000);
 }
 
 async function asyncQuerySelector(containerElement,query){
