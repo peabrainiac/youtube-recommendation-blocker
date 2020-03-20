@@ -4,11 +4,22 @@ onLoad(function (){
 	var saveButton = document.getElementById("button-save");
 	saveButton.addEventListener("click",function(){
 		saveSettings(colorSettingsElement.data);
+		saveButton.classList.remove("highlighted");
+	});
+	window.addEventListener("keydown",(e)=>{
+		if ((e.key=="s"||e.key=="S")&&(e.ctrlKey||e.metaKey)){
+			e.preventDefault();
+			saveButton.click();
+		}
 	});
 
 	browser.storage.local.get("colorSettings").then((settings)=>{
 		// loads some example channels if there are no saved settings yet. Will be removed in the next release
 		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",currentChannel:"#e0e0e0",categories:[{name:"Science",color:"#d8eff8",channels:["3blue1brown","veritasium"]},{name:"Music",color:"#efdfcf",channels:["three days grace"]}]};
+	});
+
+	colorSettingsElement.onChange(()=>{
+		saveButton.classList.add("highlighted");
 	});
 
 	function saveSettings(colorSettings){
@@ -43,10 +54,19 @@ class ColorSettingsElement extends HTMLElement {
 		this._defaultCategoriesList.appendChild(this._currentChannelColorInput);
 		this._categoriesList = this.querySelector(".color-settings-categories-list");
 		this._addCategoryButton = this.querySelector(".color-settings-add-category-button");
+		this._defaultColorInput.onChange(()=>{
+			this._onChange();
+		});
+		this._currentChannelColorInput.onChange(()=>{
+			this._onChange();
+		});
 		this._addCategoryButton.addEventListener("click",()=>{
 			let categoryElement = new CategoryElement();
 			this._categoriesList.appendChild(categoryElement);
 			categoryElement.focus();
+			categoryElement.onChange(()=>{
+				this._onChange();
+			});
 		});
 	}
 
@@ -69,7 +89,14 @@ class ColorSettingsElement extends HTMLElement {
 			let categoryElement = new CategoryElement();
 			categoryElement.data = colorSettings.categories[i];
 			this._categoriesList.appendChild(categoryElement);
+			categoryElement.onChange(()=>{
+				this._onChange();
+			});
 		}
+	}
+
+	onChange(callback){
+		this._onChange = callback;
 	}
 }
 
@@ -92,16 +119,25 @@ class CategoryElement extends HTMLElement {
 		this._closeButton = this.querySelector(".category-close-button");
 		this._channelList = this.querySelector(".category-channel-list");
 		this._addChannelButton = this.querySelector(".category-add-channel-button");
+		this._nameInput.addEventListener("input",()=>{
+			this._onChange();
+		});
 		this._colorInput.addEventListener("input",()=>{
 			this.setBackgroundColor(this._colorInput.value);
+			this._onChange();
 		});
 		this._closeButton.addEventListener("click",()=>{
 			this.remove();
+			this._onChange();
 		});
 		this._addChannelButton.addEventListener("click",()=>{
 			let channelElement = new CategoryEntryElement();
 			this._channelList.appendChild(channelElement);
 			channelElement.focus();
+			channelElement.onChange(()=>{
+				this._onChange();
+			});
+			this._onChange();
 		});
 	}
 
@@ -125,6 +161,9 @@ class CategoryElement extends HTMLElement {
 			let channelElement = new CategoryEntryElement();
 			channelElement.data = categoryData.channels[i];
 			this._channelList.appendChild(channelElement);
+			channelElement.onChange(()=>{
+				this._onChange();
+			});
 		}
 	}
 
@@ -135,6 +174,10 @@ class CategoryElement extends HTMLElement {
 
 	focus(){
 		this._nameInput.focus();
+	}
+
+	onChange(callback){
+		this._onChange = callback;
 	}
 }
 
@@ -150,9 +193,13 @@ class DefaultCategoryElement extends HTMLElement {
 		`;
 		this._header = this.querySelector(".category-header");
 		this._nameInput = this.querySelector(".category-name");
+		this._nameInput.addEventListener("input",()=>{
+			this._onChange();
+		});
 		this._colorInput = this.querySelector(".category-color");
 		this._colorInput.addEventListener("input",()=>{
 			this.setBackgroundColor(this._colorInput.value);
+			this._onChange();
 		});
 	}
 
@@ -176,6 +223,10 @@ class DefaultCategoryElement extends HTMLElement {
 	setBackgroundColor(color){
 		this._header.style.background = color;
 	}
+
+	onChange(callback){
+		this._onChange = callback;
+	}
 }
 
 class CategoryEntryElement extends HTMLElement {
@@ -187,9 +238,13 @@ class CategoryEntryElement extends HTMLElement {
 			<svg class="channel-close-button" width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
 		`;
 		this._channelInput = this.querySelector(".channel-name");
+		this._channelInput.addEventListener("input",()=>{
+			this._onChange();
+		});
 		this._closeButton = this.querySelector(".channel-close-button");
 		this._closeButton.addEventListener("click",()=>{
 			this.remove();
+			this._onChange();
 		});
 	}
 
@@ -203,6 +258,10 @@ class CategoryEntryElement extends HTMLElement {
 
 	focus(){
 		this._channelInput.focus();
+	}
+
+	onChange(callback){
+		this._onChange = callback;
 	}
 }
 

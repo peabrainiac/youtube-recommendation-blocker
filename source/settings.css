@@ -95,6 +95,22 @@ input:not([readonly]):hover, .category-channel-entry:hover > input:not([readonly
 input:not([readonly]):focus {
 	border-bottom-color: #000000b0;
 }
+#button-save {
+	margin: 30px 5px 5px 15px;
+	background: #e0e0e0;
+	transition: background-color 0.25s ease;
+	font-size: 1.2em;
+	height: 40px;
+	width: 100px;
+	cursor: default;
+}
+#button-save.highlighted {
+	background: #bfbfbf;
+	cursor: pointer;
+}
+#button-save.highlighted:hover {
+	background: #40ff40;
+}
 button {
 	border: none;
 	height: 30px;
