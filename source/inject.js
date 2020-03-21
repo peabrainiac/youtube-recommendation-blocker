@@ -111,7 +111,7 @@ function asyncQuerySelectorAll(containerElement,query,callback){
 async function getColorSettings(){
 	let settings = await browser.storage.local.get("colorSettings");
 	console.log("Settings:",settings);
-	return ((settings&&settings.colorSettings)?settings.colorSettings:{default:"#efefef",categories:[]});
+	return (settings&&settings.colorSettings)||{default:"#efefef",currentChannel:"#e0e0e0",categories:[]};
 }
 
 function getVideoColor(settings,title,channel,currentChannel=null){
