@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Youtube Recommendations Blocker",
-	"version": "1.1.0",
-	"description": "Blocks video recommendations on Youtube to keep you from getting distracted. Search results and direct links are still available.",
+	"version": "1.1.1",
+	"description": "Blocks video recommendations on Youtube to keep you from getting distracted.",
 	"icons": {
 		"64": "favicon.png"
 	},
