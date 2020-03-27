@@ -83,16 +83,16 @@ color-settings-element, category-element, default-category-element, category-ent
 .category-channel-entry:hover .channel-close-button:hover {
 	color: #000000b0;
 }
-input {
-	background: transparent;
-	border: 1px solid transparent;
-	transition: border-bottom-color 0.25s ease;
-	font-size: 1em;
+text-input, span.category-name {
+	font-family: "MS Shell Dlg 2", sans-serif;
 }
-input:not([readonly]):hover, .category-channel-entry:hover > input:not([readonly]) {
+span.category-name {
+	padding: 2px;
+}
+text-input:hover, .category-channel-entry:hover > text-input {
 	border-bottom-color: #00000060;
 }
-input:not([readonly]):focus {
+text-input:focus-within {
 	border-bottom-color: #000000b0;
 }
 #button-save {

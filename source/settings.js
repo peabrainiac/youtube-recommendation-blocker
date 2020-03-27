@@ -105,8 +105,8 @@ class CategoryElement extends HTMLElement {
 		this.className = "category";
 		this.innerHTML = `
 			<div class="category-header">
-				<input type="text" class="category-name" placeholder="category name"></input>
-				<input type="text" class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></input>
+				<text-input class="category-name" placeholder="category name"></text-input>
+				<text-input class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></text-input>
 				<svg class="category-close-button" width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
 			</div>
 			<div class="category-channel-list"></div>
@@ -186,15 +186,12 @@ class DefaultCategoryElement extends HTMLElement {
 		this.className = "default-category";
 		this.innerHTML = `
 			<div class="category-header">
-				<input type="text" class="category-name" readonly="true"></input>
-				<input type="text" class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></input>
+				<span class="category-name"></span>
+				<text-input class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></text-input>
 			</div>
 		`;
 		this._header = this.querySelector(".category-header");
-		this._nameInput = this.querySelector(".category-name");
-		this._nameInput.addEventListener("input",()=>{
-			this._onChange();
-		});
+		this._nameSpan = this.querySelector(".category-name");
 		this._colorInput = this.querySelector(".category-color");
 		this._colorInput.addEventListener("input",()=>{
 			this.setBackgroundColor(this._colorInput.value);
@@ -212,11 +209,11 @@ class DefaultCategoryElement extends HTMLElement {
 	}
 
 	get name(){
-		return this._nameInput.value;
+		return this._nameSpan.textContent;
 	}
 
 	set name(name){
-		this._nameInput.value = name;
+		this._nameSpan.innerText = name;
 	}
 
 	setBackgroundColor(color){
@@ -233,7 +230,7 @@ class CategoryEntryElement extends HTMLElement {
 		super();
 		this.className = "category-channel-entry";
 		this.innerHTML = `
-			<input type="test" class="channel-name" placeholder="channel name here">
+			<text-input class="channel-name" placeholder="channel name here"></text-input>
 			<svg class="channel-close-button" width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
 		`;
 		this._channelInput = this.querySelector(".channel-name");
@@ -264,7 +261,80 @@ class CategoryEntryElement extends HTMLElement {
 	}
 }
 
+class TextInput extends HTMLElement {
+	constructor(){
+		super();
+		this.attachShadow({mode:"open"});
+		this.shadowRoot.innerHTML = `
+			<style>
+				:host {
+					display: inline-block;
+					position: relative;
+					min-width: 185px;
+					padding: 1px;
+					border: 1px solid transparent;
+					transition: border-bottom-color 0.25s ease;
+					font-family: "MS Shell Dlg 2", sans-serif; 
+				}
+				input {
+					background: transparent;
+					position: absolute;
+					left: 0;
+					top: 0;
+					width: 100%;
+					height: 100%;
+				}
+				span {
+					visibility: hidden;
+				}
+				input, span {
+					padding: 0;
+					border: none;
+					font: inherit;
+					text-align: inherit;
+					white-space: pre;
+				}
+			</style>
+			<span> </span>
+			<input type="text" class="inner-input">
+		`;
+		this._input = this.shadowRoot.querySelector("input");
+		this._text = this.shadowRoot.querySelector("span");
+		this._input.addEventListener("input",()=>{
+			this._text.innerText = this._input.value||" ";
+		});
+	}
+
+	get value(){
+		return this._input.value;
+	}
+
+	set value(value){
+		this._input.value = value;
+		this._text.innerText = value||" ";
+	}
+
+	static get observedAttributes(){
+		return ["placeholder"];
+	}
+
+	attributeChangedCallback(name,oldValue,newValue){
+		if (name=="placeholder"){
+			this._input.setAttribute(name,newValue);
+		}
+	}
+
+	get placeholder(){
+		return this.getAttribute("placeholder");
+	}
+
+	set placeholder(value){
+		this.setAttribute("placeholder",value);
+	}
+}
+
 customElements.define("color-settings-element",ColorSettingsElement);
 customElements.define("category-element",CategoryElement);
 customElements.define("default-category-element",DefaultCategoryElement);
 customElements.define("category-entry-element",CategoryEntryElement);
+customElements.define("text-input",TextInput);
