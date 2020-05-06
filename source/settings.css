@@ -87,7 +87,9 @@ text-input, span.category-name {
 	font-family: "MS Shell Dlg 2", sans-serif;
 }
 span.category-name {
-	padding: 2px;
+	display: inline-block;
+	padding: 1px;
+	border: 1px solid transparent;
 }
 text-input:hover, .category-channel-entry:hover > text-input {
 	border-bottom-color: #00000060;

@@ -168,7 +168,7 @@ class CategoryElement extends HTMLElement {
 
 	setBackgroundColor(color){
 		this._header.style.background = color;
-		this._channelList.style.background = color+" linear-gradient(#ffffffbf,#ffffffbf)";
+		this._channelList.style.background = color+" linear-gradient(#ffffff80,#ffffff80)";
 	}
 
 	focus(){
@@ -281,14 +281,15 @@ class TextInput extends HTMLElement {
 					position: absolute;
 					left: 0;
 					top: 0;
-					width: 100%;
-					height: 100%;
+					right: 0;
+					bottom: 0;
+					padding: inherit;
 				}
 				span {
 					visibility: hidden;
+					padding: 0;
 				}
 				input, span {
-					padding: 0;
 					border: none;
 					font: inherit;
 					text-align: inherit;
@@ -303,6 +304,10 @@ class TextInput extends HTMLElement {
 		this._input.addEventListener("input",()=>{
 			this._text.innerText = this._input.value||" ";
 		});
+	}
+
+	focus(){
+		this._input.focus();
 	}
 
 	get value(){
