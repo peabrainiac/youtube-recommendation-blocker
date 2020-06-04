@@ -3,6 +3,7 @@
 	const startPageRegex = /youtube\.com\/?$/;
 	const isVideoPage = ()=>(videoPageRegex.test(document.location.href));
 	const isStartPage = ()=>(startPageRegex.test(document.location.href));
+	const videoQuerySelector = "ytd-compact-video-renderer, ytd-compact-playlist-renderer, ytd-rich-grid-video-renderer";
 
 	const videoPageStyles = loadStylesheet("video.css");
 	const startPageStyles = loadStylesheet("startpage.css");
@@ -27,106 +28,92 @@
 		startPageStyles.disabled = !isStartPage();
 	}
 
-	onLoadOrNavigationEnd(function(){
-		console.log("Navigation End!")
-		if (isVideoPage()){
-			onVideoPageLoad();
+	const colorSettings = new ColorSettings();
+	await colorSettings.fetch();
+	let currentChannel = null;
+	let container = null;
+	let updatePlanned = false;
+	let mutationObserver = new MutationObserver((mutationRecords)=>{
+		// updates the colors of all videos 500ms later, unless another update is already planned before that 
+		if (!updatePlanned){
+			updatePlanned = true;
+			setTimeout(()=>{
+				updatePlanned = false;
+				updateColors();
+			},3000);
 		}
-		if (isStartPage()){
-			onStartPageLoad();
-		}
+		mutationRecords.forEach((mutationRecord)=>{
+			mutationRecord.addedNodes.forEach((element)=>{
+				if (element.matches(videoQuerySelector)){
+					colorVideo(element);
+				}else{
+					element.querySelectorAll(videoQuerySelector).forEach(colorVideo);
+				}
+			});
+		});
 	});
 
-	async function onStartPageLoad(){
-		console.log("Running code on startpage!");
-		var colorSettings = await getColorSettings();
-		let container = await asyncQuerySelector(document.body,"#contents.ytd-rich-grid-renderer");
-		console.log("Grid loaded:",container);
-		asyncQuerySelectorAll(container,"ytd-rich-grid-video-renderer",function(video){
-			console.log("Processing video: ",video);
-			colorVideo(video,colorSettings);
-			setTimeout(()=>{
-				// checks the video again one second later, in case the page wasn't fully loaded previously
-				colorVideo(video,colorSettings);
-			},1000)
-		});
-	}
+	onLoadOrNavigationEnd(function(){
+		console.log("Navigation End!");
+		updateColors();
+		//setTimeout(updateColors,1000);
+	});
 
-	async function onVideoPageLoad(){
-		var colorSettings = await getColorSettings();
-		let currentChannel = (await asyncQuerySelector(document.body,"#meta #upload-info #channel-name a")).textContent;
+	async function updateColors(){
+		let t1 = Date.now();
+		console.log("Updating!");
+		let prevContainer = container;
+		if (isVideoPage()){
+			currentChannel = (await asyncQuerySelector(document.body,"#meta #upload-info #channel-name a")).textContent;
+			container = await asyncQuerySelector(document.body,"ytd-watch-next-secondary-results-renderer #items");
+		}else if(isStartPage()){
+			currentChannel = null;
+			container = await asyncQuerySelector(document.body,"#contents.ytd-rich-grid-renderer");
+		}
 		console.log("Current channel:",currentChannel);
-		let list = await asyncQuerySelector(document.body,"ytd-watch-next-secondary-results-renderer #items");
-		console.log("List loaded!");
-		asyncQuerySelectorAll(list,"ytd-compact-video-renderer, ytd-compact-playlist-renderer",function(video){
-			console.log("Processing video: ",video);
-			colorVideo(video,colorSettings,currentChannel);
-			setTimeout(()=>{
-				// checks the video again one second later, in case the page wasn't fully loaded previously
-				colorVideo(video,colorSettings,currentChannel);
-			},1000);
-		});
+		console.log("Container:",container);
+		if (container!=prevContainer){
+			mutationObserver.disconnect();
+			processedVideos = [];
+			mutationObserver.observe(container,{childList:true});
+		}
+		let videos = container.querySelectorAll(videoQuerySelector);
+		videos.forEach(processVideo);
+		console.log("time spend updating: "+(Date.now()-t1)+"ms");
 	}
 
-	function colorVideo(video,colorSettings,currentChannel=null){
+	function processVideo(video){
+		console.log("Processing video:");
+		colorVideo(video);
+		setTimeout(()=>{
+			// checks the video again one second later, in case the page wasn't fully loaded previously
+			colorVideo(video);
+		},1000);
+	}
+
+	function colorVideo(video){
 		let title = (video.querySelector("#video-title")||{}).textContent.trim();
 		let channel = (video.querySelector("#channel-name #container #text-container #text")||{}).textContent;
-		video.style.setProperty("--ext-yt-blocker-color",getVideoColor(colorSettings,title,channel,currentChannel));
+		video.style.setProperty("--ext-yt-blocker-color",colorSettings.getVideoColor(title,channel,currentChannel));
 	}
 
 	async function asyncQuerySelector(containerElement,query){
 		return new Promise((resolve,reject)=>{
-			let mutationObserver = new MutationObserver(testQuery);
-			mutationObserver.observe(containerElement,{childList:true,subtree:true});
-			testQuery();
-			function testQuery(){
-				let element = containerElement.querySelector(query);
-				if (element){
-					mutationObserver.disconnect();
-					resolve(element);
-				}
+			let element = containerElement.querySelector(query);
+			if (element){
+				resolve(element);
+			}else{
+				let mutationObserver = new MutationObserver(()=>{
+					let element = containerElement.querySelector(query);
+					if (element){
+						mutationObserver.disconnect();
+						resolve(element);
+					}
+				});
+				mutationObserver.observe(containerElement,{childList:true,subtree:true});
+				
 			}
 		});
-	}
-
-	function asyncQuerySelectorAll(containerElement,query,callback){
-		let processedElements = [];
-		let mutationObserver = new MutationObserver(update);
-		mutationObserver.observe(containerElement,{childList:true})
-		update();
-		function update(){
-			let elements = containerElement.querySelectorAll(query);
-			for (let i=0;i<elements.length;i++){
-				let element = elements[i];
-				if (!processedElements.includes(element)){
-					callback(element);
-					processedElements.push(element);
-				}
-			}
-		}
-	}
-
-	async function getColorSettings(){
-		let settings = await browser.storage.local.get("colorSettings");
-		console.log("Settings:",settings);
-		return (settings&&settings.colorSettings)||{default:"#efefef",currentChannel:"#e0e0e0",categories:[]};
-	}
-
-	function getVideoColor(settings,title,channel,currentChannel=null){
-		let color = settings.default;
-		if (channel==currentChannel){
-			color = settings.currentChannel;
-		}
-		if (channel!==undefined){
-			for (let i=0;i<settings.categories.length;i++){
-				for (let i2=0;i2<settings.categories[i].channels.length;i2++){
-					if (channel.toUpperCase()==settings.categories[i].channels[i2].toUpperCase()){
-						color = settings.categories[i].color;
-					}
-				}
-			}
-		}
-		return color;
 	}
 
 	function loadStylesheet(path){
@@ -138,18 +125,43 @@
 
 	async function waitUntilLoaded(){
 		return new Promise((resolve)=>{
-			onLoad(resolve);
+			if (document.readyState!="loading"){
+				resolve();
+			}else{
+				window.addEventListener("DOMContentLoaded",resolve);
+			}
 		});
 	}
-	function onLoad(f){
-		if (document.readyState!="loading"){
-			f();
-		}else{
-			window.addEventListener("DOMContentLoaded",f);
-		}
-	}
 	function onLoadOrNavigationEnd(f){
-		onLoad(f);
+		f();
 		window.addEventListener("yt-navigate-finish",f);
 	}
 })();
+
+class ColorSettings {
+	constructor(){
+		this._colorSettings = null;
+	}
+	async fetch(){
+		let settings = await browser.storage.local.get("colorSettings");
+		console.log("Settings:",settings);
+		this._colorSettings = (settings&&settings.colorSettings)||{default:"#efefef",currentChannel:"#e0e0e0",categories:[]};
+	}
+	getVideoColor(title,channel,currentChannel=null){
+		let color = this._colorSettings.default;
+		if (channel==currentChannel){
+			color = this._colorSettings.currentChannel;
+		}
+		if (channel!==undefined){
+			for (let i=0;i<this._colorSettings.categories.length;i++){
+				let category = this._colorSettings.categories[i];
+				for (let i2=0;i2<category.channels.length;i2++){
+					if (channel.toUpperCase()==category.channels[i2].toUpperCase()){
+						color = category.color;
+					}
+				}
+			}
+		}
+		return color;
+	}
+}
