@@ -16,7 +16,7 @@
 	document.head.appendChild(videoPageStyles);
 	document.head.appendChild(startPageStyles);
 	setTimeout(()=>{
-		document.head.removeChild(tempStyles);
+		tempStyles.disabled = true;
 	},100);
 
 	window.addEventListener("yt-navigate-start",function(){
@@ -57,6 +57,17 @@
 		console.log("Navigation End!");
 		updateColors();
 		//setTimeout(updateColors,1000);
+	});
+
+	document.addEventListener("visibilitychange",async()=>{
+		if (!document.hidden){
+			await colorSettings.fetch();
+			tempStyles.disabled = false;
+			updateColors();
+			setTimeout(()=>{
+				tempStyles.disabled = true;
+			},100);
+		}
 	});
 
 	async function updateColors(){
