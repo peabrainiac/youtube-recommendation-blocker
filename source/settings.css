@@ -44,6 +44,9 @@ color-settings-element, category-element, default-category-element, category-ent
 	transition: color 0.25s ease;
 	cursor: pointer;
 }
+.category-close-button > svg {
+	display: block;
+}
 .category-header:hover .category-close-button {
 	color: #00000040;
 }
@@ -71,11 +74,15 @@ color-settings-element, category-element, default-category-element, category-ent
 	background-color: #00bfff;
 }
 .channel-close-button {
+	display: inline-block;
 	padding: 5px;
 	margin: -5px 0;
 	color: transparent;
 	transition: color 0.25s ease;
 	cursor: pointer;
+}
+.channel-close-button > svg {
+	display: block;
 }
 .category-channel-entry:hover .channel-close-button {
 	color: #00000040;

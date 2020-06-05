@@ -40,17 +40,13 @@ class ColorSettingsElement extends HTMLElement {
 		super();
 		this.className = "color-settings";
 		this.innerHTML = `
-			<div class="color-settings-default-categories-list"></div>
+			<default-category-element name="Default" title="default category for all videos"></default-category-element>
+			<default-category-element name="Current Channel" title="category for videos by the same channel as the current one"></default-category-element>
 			<div class="color-settings-categories-list"></div>
 			<button class="color-settings-add-category-button">+ Add Category</button>
 		`;
-		this._defaultCategoriesList = this.querySelector(".color-settings-default-categories-list");
-		this._defaultColorInput = new DefaultCategoryElement();
-		this._defaultColorInput.name = "Default";
-		this._defaultCategoriesList.appendChild(this._defaultColorInput);
-		this._currentChannelColorInput = new DefaultCategoryElement();
-		this._currentChannelColorInput.name = "Current Channel";
-		this._defaultCategoriesList.appendChild(this._currentChannelColorInput);
+		this._defaultColorInput = this.querySelector("default-category-element[name=\"Default\"]");
+		this._currentChannelColorInput = this.querySelector("default-category-element[name=\"Current Channel\"]");
 		this._categoriesList = this.querySelector(".color-settings-categories-list");
 		this._addCategoryButton = this.querySelector(".color-settings-add-category-button");
 		this._defaultColorInput.onChange(()=>{
@@ -105,9 +101,11 @@ class CategoryElement extends HTMLElement {
 		this.className = "category";
 		this.innerHTML = `
 			<div class="category-header">
-				<text-input class="category-name" placeholder="category name"></text-input>
+				<text-input class="category-name" placeholder="category name" title="category name"></text-input>
 				<text-input class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></text-input>
-				<svg class="category-close-button" width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
+				<div class="category-close-button" title="delete category">
+					<svg width="12" height="12"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
+				</div>
 			</div>
 			<div class="category-channel-list"></div>
 			<button class="category-add-channel-button">+ Add Channel</button>
@@ -208,12 +206,32 @@ class DefaultCategoryElement extends HTMLElement {
 		this.setBackgroundColor(colorData);
 	}
 
+	static get observedAttributes(){
+		return ["name","title"];
+	}
+
+	attributeChangedCallback(name,oldValue,newValue){
+		if (name=="name"){
+			this._nameSpan.innerText = newValue;;
+		}else if(name="title"){
+			this._nameSpan.title = newValue;
+		}
+	}
+
 	get name(){
-		return this._nameSpan.textContent;
+		return this.getAttribute("name");
 	}
 
 	set name(name){
-		this._nameSpan.innerText = name;
+		this.setAttribute("name",name);
+	}
+
+	get title(){
+		return this.getAttribute("title");
+	}
+
+	set title(titleText){
+		this.setAttribute("title",titleText);
 	}
 
 	setBackgroundColor(color){
@@ -230,8 +248,10 @@ class CategoryEntryElement extends HTMLElement {
 		super();
 		this.className = "category-channel-entry";
 		this.innerHTML = `
-			<text-input class="channel-name" placeholder="channel name here"></text-input>
-			<svg class="channel-close-button" width="12" height="12" xmlns="http://www.w3.org/2000/svg"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
+			<text-input class="channel-name" placeholder="channel name here" title="channel name"></text-input>
+			<div class="channel-close-button" title="delete channel">
+				<svg width="12" height="12"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
+			</div>
 		`;
 		this._channelInput = this.querySelector(".channel-name");
 		this._channelInput.addEventListener("input",()=>{
@@ -283,6 +303,7 @@ class TextInput extends HTMLElement {
 					top: 0;
 					right: 0;
 					bottom: 0;
+					width: 100%;
 					padding: inherit;
 				}
 				span {
