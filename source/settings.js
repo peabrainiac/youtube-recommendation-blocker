@@ -2,9 +2,11 @@ onLoad(function (){
 	var colorSettingsElement = new ColorSettingsElement();
 	document.getElementById("settings").prepend(colorSettingsElement);
 	var saveButton = document.getElementById("button-save");
+	saveButton.tabIndex = -1;
 	saveButton.addEventListener("click",function(){
 		saveSettings(colorSettingsElement.data);
 		saveButton.classList.remove("highlighted");
+		saveButton.tabIndex = -1;
 	});
 	window.addEventListener("keydown",(e)=>{
 		if ((e.key=="s"||e.key=="S")&&(e.ctrlKey||e.metaKey)){
@@ -19,6 +21,7 @@ onLoad(function (){
 
 	colorSettingsElement.onChange(()=>{
 		saveButton.classList.add("highlighted");
+		saveButton.tabIndex = 0;
 	});
 
 	function saveSettings(colorSettings){
@@ -103,7 +106,7 @@ class CategoryElement extends HTMLElement {
 			<div class="category-header">
 				<text-input class="category-name" placeholder="category name" title="category name"></text-input>
 				<text-input class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></text-input>
-				<div class="category-close-button" title="delete category">
+				<div class="category-close-button" title="delete category" tabindex="0">
 					<svg width="12" height="12"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
 				</div>
 			</div>
@@ -126,6 +129,19 @@ class CategoryElement extends HTMLElement {
 		this._closeButton.addEventListener("click",()=>{
 			this.remove();
 			this._onChange();
+		});
+		this._closeButton.addEventListener("keydown",(e)=>{
+			if (e.key=="Enter"){
+				e.stopPropagation();
+				e.preventDefault();
+				if (this.nextElementSibling!==null){
+					this.nextElementSibling.focus();
+				}else{
+					this.parentElement.nextElementSibling.focus();
+				}
+				this.remove();
+				this._onChange();
+			}
 		});
 		this._addChannelButton.addEventListener("click",()=>{
 			let channelElement = new CategoryEntryElement();
@@ -249,7 +265,7 @@ class CategoryEntryElement extends HTMLElement {
 		this.className = "category-channel-entry";
 		this.innerHTML = `
 			<text-input class="channel-name" placeholder="channel name here" title="channel name"></text-input>
-			<div class="channel-close-button" title="delete channel">
+			<div class="channel-close-button" title="delete channel" tabindex="0">
 				<svg width="12" height="12"><path d="M 1 1 L 11 11 M 1 11 L 11 1" style="fill:transparent;stroke:currentcolor;stroke-linecap:round;stroke-width:2px" /></svg>
 			</div>
 		`;
@@ -261,6 +277,19 @@ class CategoryEntryElement extends HTMLElement {
 		this._closeButton.addEventListener("click",()=>{
 			this.remove();
 			this._onChange();
+		});
+		this._closeButton.addEventListener("keydown",(e)=>{
+			if (e.key=="Enter"){
+				e.stopPropagation();
+				e.preventDefault();
+				if (this.nextElementSibling!==null){
+					this.nextElementSibling.focus();
+				}else{
+					this.parentElement.nextElementSibling.focus();
+				}
+				this.remove();
+				this._onChange();
+			}
 		});
 	}
 
@@ -305,6 +334,7 @@ class TextInput extends HTMLElement {
 					bottom: 0;
 					width: 100%;
 					padding: inherit;
+					outline: none;
 				}
 				span {
 					visibility: hidden;
