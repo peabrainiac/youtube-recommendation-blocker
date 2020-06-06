@@ -2,11 +2,12 @@ onLoad(function (){
 	var colorSettingsElement = new ColorSettingsElement();
 	document.getElementById("settings").prepend(colorSettingsElement);
 	var saveButton = document.getElementById("button-save");
-	saveButton.tabIndex = -1;
+	saveButton.disabled = true;
 	saveButton.addEventListener("click",function(){
 		saveSettings(colorSettingsElement.data);
 		saveButton.classList.remove("highlighted");
-		saveButton.tabIndex = -1;
+		saveButton.disabled = true;
+		saveButton.blur();
 	});
 	window.addEventListener("keydown",(e)=>{
 		if ((e.key=="s"||e.key=="S")&&(e.ctrlKey||e.metaKey)){
@@ -21,7 +22,7 @@ onLoad(function (){
 
 	colorSettingsElement.onChange(()=>{
 		saveButton.classList.add("highlighted");
-		saveButton.tabIndex = 0;
+		saveButton.disabled = false;
 	});
 
 	function saveSettings(colorSettings){
@@ -65,6 +66,7 @@ class ColorSettingsElement extends HTMLElement {
 			categoryElement.onChange(()=>{
 				this._onChange();
 			});
+			this._onChange();
 		});
 	}
 
@@ -103,7 +105,7 @@ class CategoryElement extends HTMLElement {
 		super();
 		this.className = "category";
 		this.innerHTML = `
-			<div class="category-header">
+			<div class="category-header" title="custom category">
 				<text-input class="category-name" placeholder="category name" title="category name"></text-input>
 				<text-input class="category-color" placeholder="rgb color value" title="hex color value, e.g. #dfefff. Search \'hex color picker\' online for more information."></text-input>
 				<div class="category-close-button" title="delete category" tabindex="0">
@@ -223,14 +225,12 @@ class DefaultCategoryElement extends HTMLElement {
 	}
 
 	static get observedAttributes(){
-		return ["name","title"];
+		return ["name"];
 	}
 
 	attributeChangedCallback(name,oldValue,newValue){
 		if (name=="name"){
 			this._nameSpan.innerText = newValue;;
-		}else if(name="title"){
-			this._nameSpan.title = newValue;
 		}
 	}
 
@@ -240,14 +240,6 @@ class DefaultCategoryElement extends HTMLElement {
 
 	set name(name){
 		this.setAttribute("name",name);
-	}
-
-	get title(){
-		return this.getAttribute("title");
-	}
-
-	set title(titleText){
-		this.setAttribute("title",titleText);
 	}
 
 	setBackgroundColor(color){

@@ -47,10 +47,10 @@ color-settings-element, category-element, default-category-element, category-ent
 .category-close-button > svg {
 	display: block;
 }
-.category-header:hover .category-close-button {
+.category:hover .category-close-button {
 	color: #00000040;
 }
-.category-header:hover .category-close-button:hover, .category-close-button:focus, .category-header:hover .category-close-button:focus {
+.category:hover .category-close-button:hover, .category-close-button:focus, .category:hover .category-close-button:focus {
 	color: #000000b0;
 }
 .category-channel-list {
