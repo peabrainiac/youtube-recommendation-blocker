@@ -3,7 +3,8 @@
 	const startPageRegex = /youtube\.com\/?$/;
 	const isVideoPage = ()=>(videoPageRegex.test(document.location.href));
 	const isStartPage = ()=>(startPageRegex.test(document.location.href));
-	const videoQuerySelector = "ytd-compact-video-renderer, ytd-compact-playlist-renderer, ytd-rich-grid-video-renderer";
+	// note: ytd-rich-grid-video-renderer is probably not needed anymore, I'm just leaving it in for now in case anyone is still shown the old design
+	const videoQuerySelector = "ytd-compact-video-renderer, ytd-compact-playlist-renderer, ytd-rich-grid-video-renderer, ytd-rich-grid-media";
 
 	const videoPageStyles = loadStylesheet("video.css");
 	const startPageStyles = loadStylesheet("startpage.css");
