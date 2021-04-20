@@ -6,6 +6,7 @@ ytd-compact-video-renderer:not(:hover) ytd-channel-name, ytd-compact-video-rende
 	background: var(--ext-yt-blocker-color) !important;
 	border-radius: 3px;
 	pointer-events: none;
+	border-color: var(--ext-yt-blocker-color) !important;
 }
 ytd-compact-video-renderer:not(:hover) span#video-title, ytd-compact-video-renderer:not(:hover) #metadata-line > span {
 	color: transparent;
