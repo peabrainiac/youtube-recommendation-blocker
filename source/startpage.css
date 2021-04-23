@@ -1,5 +1,11 @@
 ytd-rich-grid-media, ytd-post-renderer {
-	--ext-yt-blocker-color: #efefef;
+	--ext-yt-blocker-color: #80808010;
+	--ext-yt-blocker-color-2: #efefef80;
+}
+@media (prefers-color-scheme: dark){
+	ytd-rich-grid-media, ytd-post-renderer {
+		--ext-yt-blocker-color-2: #30303080;
+	}
 }
 
 /* For videos on new Frontpage Design */
@@ -44,14 +50,14 @@ ytd-rich-grid-media::after {
 ytd-rich-grid-media:hover::after {
 	transition: all 0.5s ease 1.5s;
 	height: 0;
-	background: #efefef80;
+	background: var(--ext-yt-blocker-color-2);
 }
 
 /*
  * for old classname (outdated since ~september 20th-ish 2020?)
  */
  ytd-rich-grid-video-renderer, ytd-post-renderer {
-	--ext-yt-blocker-color: #efefef;
+	--ext-yt-blocker-color: #80808010;
 }
 ytd-rich-grid-video-renderer:not(:hover) ytd-channel-name, ytd-rich-grid-video-renderer:not(:hover) ytd-thumbnail, ytd-rich-grid-video-renderer:not(:hover) #video-title, ytd-rich-grid-video-renderer:not(:hover) #metadata-line > span, ytd-rich-grid-video-renderer:not(:hover) ytd-badge-supported-renderer > div.badge {
 	background: var(--ext-yt-blocker-color) !important;
@@ -94,7 +100,7 @@ ytd-rich-grid-video-renderer::after {
 ytd-rich-grid-video-renderer:hover::after {
 	transition: all 0.5s ease 1.5s;
 	height: 0;
-	background: #efefef80;
+	background: var(--ext-yt-blocker-color-2);
 }
 
 

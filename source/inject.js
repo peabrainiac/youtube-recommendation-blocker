@@ -157,7 +157,7 @@ class ColorSettings {
 	async fetch(){
 		let settings = await browser.storage.local.get("colorSettings");
 		console.log("Settings:",settings);
-		this._colorSettings = (settings&&settings.colorSettings)||{default:"#efefef",currentChannel:"#e0e0e0",categories:[]};
+		this._colorSettings = (settings&&settings.colorSettings)||{default:"#80808010",currentChannel:"#80808020",categories:[]};
 	}
 	getVideoColor(title,channel,currentChannel=null){
 		let color = this._colorSettings.default;

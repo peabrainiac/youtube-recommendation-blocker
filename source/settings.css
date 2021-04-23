@@ -1,3 +1,19 @@
+html {
+	--background-transparent-1: #ffffff80;
+	--color-text-transparent-1: #00000040;
+	--color-text-transparent-2: #00000060;
+	--color-text-transparent-3: #000000b0;
+}
+@media (prefers-color-scheme: dark){
+	html {
+		background-color: #202020;
+		color: #dfdfdf;
+		--background-transparent-1: #20202080;
+		--color-text-transparent-1: #dfdfdf40;
+		--color-text-transparent-2: #dfdfdf60;
+		--color-text-transparent-3: #dfdfdfb0;
+	}
+}
 color-settings-element, category-element, default-category-element, category-entry-element {
 	display: block;
 }
@@ -13,7 +29,7 @@ color-settings-element, category-element, default-category-element, category-ent
 .color-settings-add-category-button {
 	display: block;
 	margin: 10px auto;
-	background: #bfbfbf;
+	background: #80808080;
 	transition: background-color 0.25s ease;
 }
 .color-settings-add-category-button:hover, .color-settings-add-category-button:focus {
@@ -24,7 +40,7 @@ color-settings-element, category-element, default-category-element, category-ent
 }
 .category-header {
 	padding: 5px 10px;
-	background: #efefef;
+	background: #80808010;
 	font-size: 1.1em;
 	position: relative;
 }
@@ -48,10 +64,10 @@ color-settings-element, category-element, default-category-element, category-ent
 	display: block;
 }
 .category:hover .category-close-button {
-	color: #00000040;
+	color: var(--color-text-transparent-1);
 }
 .category:hover .category-close-button:hover, .category-close-button:focus, .category:hover .category-close-button:focus {
-	color: #000000b0;
+	color: var(--color-text-transparent-3);
 }
 .category-channel-list {
 	padding: 5px 10px 5px 30px;
@@ -82,10 +98,10 @@ color-settings-element, category-element, default-category-element, category-ent
 	display: block;
 }
 .category-channel-entry:hover .channel-close-button {
-	color: #00000040;
+	color: var(--color-text-transparent-1);
 }
 .category-channel-entry:hover .channel-close-button:hover, .channel-close-button:focus, .category-channel-entry:hover .channel-close-button:focus {
-	color: #000000b0;
+	color: var(--color-text-transparent-3);
 }
 text-input, span.category-name {
 	font-family: "MS Shell Dlg 2", sans-serif;
@@ -96,14 +112,14 @@ span.category-name {
 	border: 1px solid transparent;
 }
 text-input:hover, .category-channel-entry:hover > text-input, .category-channel-entry:focus-within > text-input {
-	border-bottom-color: #00000060;
+	border-bottom-color: var(--color-text-transparent-2);
 }
 text-input:focus-within, .category-channel-entry:hover > text-input:focus-within, .category-channel-entry:focus-within > text-input:focus-within {
-	border-bottom-color: #000000b0;
+	border-bottom-color: var(--color-text-transparent-3);
 }
 #button-save {
 	margin: 30px 5px 5px 15px;
-	background: #e0e0e0;
+	background: #80808040;
 	transition: background-color 0.25s ease;
 	font-size: 1.2em;
 	height: 40px;
@@ -111,7 +127,7 @@ text-input:focus-within, .category-channel-entry:hover > text-input:focus-within
 	cursor: default;
 }
 #button-save.highlighted {
-	background: #bfbfbf;
+	background: #80808080;
 	cursor: pointer;
 }
 #button-save.highlighted:hover, #button-save.highlighted:focus {
@@ -123,6 +139,6 @@ button {
 	padding-left: 10px;
 	padding-right: 10px;
 	color: #ffffff;
-	background: #bfbfbf;
+	background: #80808080;
 	cursor: pointer;
 }

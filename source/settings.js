@@ -17,7 +17,7 @@ onLoad(function (){
 	});
 
 	browser.storage.local.get("colorSettings").then((settings)=>{
-		colorSettingsElement.data = settings.colorSettings||{default:"#efefef",currentChannel:"#e0e0e0",categories:[]};
+		colorSettingsElement.data = settings.colorSettings||{default:"#80808010",currentChannel:"#80808020",categories:[]};
 	});
 
 	colorSettingsElement.onChange(()=>{
@@ -184,7 +184,7 @@ class CategoryElement extends HTMLElement {
 
 	setBackgroundColor(color){
 		this._header.style.background = color;
-		this._channelList.style.background = color+" linear-gradient(#ffffff80,#ffffff80)";
+		this._channelList.style.background = color+" linear-gradient(var(--background-transparent-1),var(--background-transparent-1))";
 	}
 
 	focus(){
@@ -334,6 +334,7 @@ class TextInput extends HTMLElement {
 				}
 				input, span {
 					border: none;
+					color: inherit;
 					font: inherit;
 					text-align: inherit;
 					white-space: pre;
