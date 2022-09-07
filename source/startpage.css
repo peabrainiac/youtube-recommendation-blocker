@@ -9,7 +9,7 @@ ytd-rich-grid-media, ytd-post-renderer {
 }
 
 /* For videos on new Frontpage Design */
-ytd-rich-grid-media:not(:hover) ytd-channel-name, ytd-rich-grid-media:not(:hover) ytd-thumbnail, ytd-rich-grid-media:not(:hover) #video-title, ytd-rich-grid-media:not(:hover) #metadata-line > span, ytd-rich-grid-media:not(:hover) ytd-badge-supported-renderer > div.badge {
+ytd-rich-grid-media:not(:hover) :is(ytd-channel-name, ytd-thumbnail, #video-title, #metadata-line > span, ytd-badge-supported-renderer > div.badge)  {
 	background: var(--ext-yt-blocker-color) !important;
 	border-radius: 3px;
 	pointer-events: none;
@@ -18,16 +18,16 @@ ytd-rich-grid-media:not(:hover) ytd-channel-name, ytd-rich-grid-media:not(:hover
 ytd-rich-grid-media:not(:hover) #avatar {
 	background: var(--ext-yt-blocker-color) !important;
 }
-ytd-rich-grid-media:not(:hover) #video-title, ytd-rich-grid-media:not(:hover) #metadata-line > span {
+ytd-rich-grid-media:not(:hover) :is(#video-title, #metadata-line > span) {
 	color: transparent !important;
 }
-ytd-rich-grid-media:not(:hover) ytd-channel-name > *, ytd-rich-grid-media:not(:hover) ytd-thumbnail > *, ytd-rich-grid-media:not(:hover) ytd-badge-supported-renderer > div.badge > *, ytd-rich-grid-media:not(:hover) #avatar > * {
+ytd-rich-grid-media:not(:hover) :is(ytd-channel-name, ytd-thumbnail, ytd-badge-supported-renderer > div.badge, #avatar) > * {
 	opacity: 0;
 }
-ytd-rich-grid-media:hover ytd-channel-name, ytd-rich-grid-media:hover ytd-thumbnail, ytd-rich-grid-media:hover #video-title, ytd-rich-grid-media:hover #metadata-line > span, ytd-rich-grid-media:hover ytd-badge-supported-renderer > div.badge, ytd-rich-grid-media:hover #avatar, ytd-rich-grid-media:hover ytd-thumbnail::before, ytd-rich-grid-media:hover ytd-channel-name > *, ytd-rich-grid-media:hover ytd-thumbnail > *, ytd-rich-grid-media:hover ytd-badge-supported-renderer > div.badge > *, ytd-rich-grid-media:hover #avatar > * {
+ytd-rich-grid-media:hover :is(ytd-channel-name, ytd-thumbnail, #video-title, #metadata-line > span, ytd-badge-supported-renderer > div.badge, #avatar, ytd-channel-name > *, ytd-thumbnail > *, ytd-badge-supported-renderer > div.badge > *, #avatar > *), ytd-rich-grid-media:hover ytd-thumbnail::before {
 	transition: all 0.5s ease 1.5s;
 }
-ytd-rich-grid-media ytd-channel-name, ytd-rich-grid-media ytd-thumbnail, ytd-rich-grid-media #video-title, ytd-rich-grid-media #metadata-line > span, ytd-rich-grid-media ytd-badge-supported-renderer > div.badge, ytd-rich-grid-media #avatar, ytd-rich-grid-media ytd-thumbnail::before, ytd-rich-grid-media ytd-channel-name > *, ytd-rich-grid-media ytd-thumbnail > *, ytd-rich-grid-media ytd-badge-supported-renderer > div.badge > *, ytd-rich-grid-media #avatar > * {
+ytd-rich-grid-media :is(ytd-channel-name, ytd-thumbnail, #video-title, #metadata-line > span, ytd-badge-supported-renderer > div.badge, #avatar, ytd-channel-name > *, ytd-thumbnail > *, ytd-badge-supported-renderer > div.badge > *, #avatar > *), ytd-rich-grid-media ytd-thumbnail::before {
 	transition: all 0.5s ease 1s;
 }
 ytd-rich-grid-media:not(:hover) ytd-thumbnail::before {
