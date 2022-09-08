@@ -3,8 +3,7 @@
 	const startPageRegex = /youtube\.com\/?$/;
 	const isVideoPage = ()=>(videoPageRegex.test(document.location.href));
 	const isStartPage = ()=>(startPageRegex.test(document.location.href));
-	// note: ytd-rich-grid-video-renderer is probably not needed anymore, I'm just leaving it in for now in case anyone is still shown the old design
-	const videoQuerySelector = "ytd-compact-video-renderer, ytd-compact-playlist-renderer, ytd-rich-grid-video-renderer, ytd-rich-grid-media";
+	const videoQuerySelector = "ytd-compact-video-renderer, ytd-compact-playlist-renderer, ytd-rich-item-renderer";
 
 	const videoPageStyles = loadStylesheet("video.css");
 	const startPageStyles = loadStylesheet("startpage.css");
@@ -21,9 +20,16 @@
 	},100);
 
 	window.addEventListener("yt-navigate-start",function(){
-		console.log("Navigation Start!");
-		updateActiveStyles();
+		console.log("Navigation start!");
+		//updateActiveStyles();
 	});
+	window.addEventListener("yt-navigate-finish",function(){
+		console.log("Navigation finish!");
+		updateActiveStyles();
+		updateColors();
+		//setTimeout(updateColors,1000);
+	});
+
 	function updateActiveStyles(){
 		videoPageStyles.disabled = !isVideoPage();
 		startPageStyles.disabled = !isStartPage();
@@ -52,12 +58,6 @@
 				}
 			});
 		});
-	});
-
-	onLoadOrNavigationEnd(function(){
-		console.log("Navigation End!");
-		updateColors();
-		//setTimeout(updateColors,1000);
 	});
 
 	document.addEventListener("visibilitychange",async()=>{
@@ -143,10 +143,6 @@
 				window.addEventListener("DOMContentLoaded",resolve);
 			}
 		});
-	}
-	function onLoadOrNavigationEnd(f){
-		f();
-		window.addEventListener("yt-navigate-finish",f);
 	}
 })();
 
